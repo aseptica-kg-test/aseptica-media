@@ -211,7 +211,4 @@ def mascot_frame(ctx,t):
     d.rounded_rectangle([bx+10,by+10,bx+bw-10,by+bh-10],32,outline=(255,255,255,int(90*a)),width=3)
     yy=by+30; step=int(f.size*1.25)
     for ln in L: d.text((bx+40,yy),ln,font=f,fill=(255,255,255,int(255*a))); yy+=step
-    if kind=="brand":
-        f3=F("SemiBold",42); s3="Перед применением прочитайте инструкцию"; L3=wrap(d,s3,f3,W-160); y3=by+bh+40
-        for ln in L3: d.text(((W-d.textlength(ln,font=f3))/2,y3),ln,font=f3,fill=(255,255,255)); y3+=56
     subtitles(im,ctx,t); footer(im,ctx); return im.convert("RGB")
