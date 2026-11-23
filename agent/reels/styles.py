@@ -180,9 +180,10 @@ def mascot_frame(ctx,t):
     bw=max(d.textlength(x,font=f) for x in L)+80; bh=len(L)*78+60
     bx=W-bw-60 if kind!="brand" else (W-bw)/2; by=300 if kind!="brand" else 420
     if kind=="window": by=1150-bh-40 if False else 1130; bx=W-bw-40
-    d.rounded_rectangle([bx,by,bx+bw,by+bh],40,fill=(255,255,255,int(245*a)),outline=(30,100,170,int(255*a)),width=6)
+    d.rounded_rectangle([bx,by,bx+bw,by+bh],40,fill=(0,115,187,int(235*a)))
+    d.rounded_rectangle([bx+10,by+10,bx+bw-10,by+bh-10],32,outline=(255,255,255,int(90*a)),width=3)
     yy=by+30
-    for ln in L: d.text((bx+40,yy),ln,font=f,fill=(30,60,110,int(255*a))); yy+=78
+    for ln in L: d.text((bx+40,yy),ln,font=f,fill=(255,255,255,int(255*a))); yy+=78
     if kind=="brand":
         f3=F("SemiBold",42); s3="Перед применением прочитайте инструкцию"; L3=wrap(d,s3,f3,W-160); y3=by+bh+40
         for ln in L3: d.text(((W-d.textlength(ln,font=f3))/2,y3),ln,font=f3,fill=(255,255,255)); y3+=56

@@ -77,7 +77,11 @@ def write_text():
         o=json.loads("".join(x.get("text","") for x in r["candidates"][0]["content"]["parts"]))
         if not BAD.search(o["voice"]+" "+" ".join(o["lines"])+" "+o["caption"]): return o
     o["warning"]="Проверьте текст: найдено запрещённое слово"; return o
+def say_fix(text):
+    for a,b in (pack.get("tts_pronounce") or {}).items(): text=re.sub(a,b,text)
+    return text
 def tts(text):
+    text=say_fix(text)
     if MOCK:
         sr=24000; t=np.arange(int(sr*14))/sr; return (np.sin(2*np.pi*220*t)*0.3*(np.sin(2*np.pi*3*t)>0)).astype(np.float32),sr
     err=[]
@@ -132,7 +136,7 @@ def render_new(o,voice,dur,sr):
     else:
         ends=[vstart+vlen*0.45,end_voice,dur+1]
     ctx={"color":color,"lines":(o["lines"]+["","",""])[:3],"sentences":S,"dur":dur,"box":box,"name":PRODNAME,"sub":PRODSUB,
-         "logo":logo,"logo_blue":lb,"footer":footer,"scene_ends":ends,"env":envf,"kinds":KINDS}
+         "logo":logo,"logo_blue":lb,"footer":(footer if (isP or STYLE=="infographic") else ""),"scene_ends":ends,"env":envf,"kinds":KINDS}
     fpath="/tmp/reel/f%05d.jpg"
     for fi in range(int(dur*FPS)):
         fr=(styles.infographic_frame if STYLE=="infographic" else styles.mascot_frame)(ctx,fi/FPS); fr.save(fpath%fi,quality=88)
