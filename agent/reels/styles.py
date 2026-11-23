@@ -184,11 +184,17 @@ def mascot_frame(ctx,t):
     a=ease(lt/0.4); f=F("Black",64); L=wrap(d,txt,f,640) if kind!="brand" else wrap(d,txt,f,900)
     bw=max(d.textlength(x,font=f) for x in L)+80; bh=len(L)*78+60
     bx=W-bw-60 if kind!="brand" else (W-bw)/2; by=300 if kind!="brand" else 420
-    if kind=="window": by=1150-bh-40 if False else 1130; bx=W-bw-40
+    if kind=="window":   # облачко справа от персонажа, не закрывая его
+        bx=610; fs=60
+        while True:
+            f=F("Black",fs); L=wrap(d,txt,f,W-40-bx-80); bw=max(d.textlength(x,font=f) for x in L)+80
+            if bw<=W-40-bx or fs<=38: break
+            fs-=4
+        bh=len(L)*int(fs*1.25)+60; by=1290-bh
     d.rounded_rectangle([bx,by,bx+bw,by+bh],40,fill=(0,115,187,int(235*a)))
     d.rounded_rectangle([bx+10,by+10,bx+bw-10,by+bh-10],32,outline=(255,255,255,int(90*a)),width=3)
-    yy=by+30
-    for ln in L: d.text((bx+40,yy),ln,font=f,fill=(255,255,255,int(255*a))); yy+=78
+    yy=by+30; step=int(f.size*1.25)
+    for ln in L: d.text((bx+40,yy),ln,font=f,fill=(255,255,255,int(255*a))); yy+=step
     if kind=="brand":
         f3=F("SemiBold",42); s3="Перед применением прочитайте инструкцию"; L3=wrap(d,s3,f3,W-160); y3=by+bh+40
         for ln in L3: d.text(((W-d.textlength(ln,font=f3))/2,y3),ln,font=f3,fill=(255,255,255)); y3+=56
