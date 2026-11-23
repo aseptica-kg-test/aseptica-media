@@ -42,6 +42,7 @@ elif REQ.get("topic","").startswith("tip:"):
 if isP:
     p=pack["products"][k%len(pack["products"])]; key=p["key"]
     angle=p["angles"][(k//len(pack["products"]))%len(p["angles"])]
+    if REQ.get("angle","").isdigit(): angle=p["angles"][int(REQ["angle"])%len(p["angles"])]   # тема по запросу: angle=N
     PRODKEY=key; PRODNAME=p["name"]; PRODSUB=next((f.split(":",1)[1].strip() for f in p["facts"] if f.startswith(("Состав","Капсула «Б»"))),"")[:80]; KINDS=["brand"]
     img_rel="posts/products/%s.jpg"%key; footer=p["footer"]; title="Reels: "+p["name"]+" — "+angle
     color={"vitolin":(240,130,40),"forte":(46,160,90),"oftalron":(220,40,130),"oftalron_p":(225,45,50),"keraton":(110,90,200),"dakrocin":(240,165,10),"omevit":(70,60,170),"omevit_kids":(0,150,165)}[key]
