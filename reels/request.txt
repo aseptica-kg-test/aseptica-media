@@ -1,1 +1,1 @@
-prod=1 run=1795430877
+style=infographic topic=product:vitolin prod=1 run=1795447613

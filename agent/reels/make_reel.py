@@ -54,8 +54,8 @@ else:
 system=("Ты пишешь сценарии коротких вертикальных видео (Reels) для компании Aseptica (глазные капли, медицинские изделия), Кыргызстан. Язык: русский.\n"
         "Стиль: "+R["style"]+"\nСтрого запрещено: "+"; ".join(R["common_forbidden"])+".\n"
         'Ответ — JSON: {"voice": текст для озвучки 30–40 слов (ролик до 25 секунд), спокойно и понятно, без хэштегов и эмодзи; дозировку и сроки называй точно как в фактах; '
-        '"lines": [3 коротких надписи на экран, каждая не длиннее 6 слов]; "caption": подпись к посту 250–450 знаков, можно 1–2 эмодзи, без хэштегов и юр. строки}.')
-BAD=re.compile(r"нейропротек|лечит|лечени|излеч|устраня|синдром|глауком|диабет|катаракт|ретинопат|кератокону|дет(и|ей|ям|ск)|подрост|беремен|гарант|лучш|№ ?1|скидк|цен[аы]",re.I)
+        '"lines": [3 коротких надписи на экран, каждая не длиннее 6 слов; надписи — это три разные ключевые мысли (польза, когда пригодится, как применять), без приветствий и без повторения фразы из начала озвучки]; Не начинай со слов «Знакомьтесь», «Представляем», «Встречайте» и не используй их вообще — начни сразу с пользы или ситуации из жизни;  "caption": подпись к посту 250–450 знаков, можно 1–2 эмодзи, без хэштегов и юр. строки}.')
+BAD=re.compile(r"знакомьт|встречайте|нейропротек|лечит|лечени|излеч|устраня|синдром|глауком|диабет|катаракт|ретинопат|кератокону|дет(и|ей|ям|ск)|подрост|беремен|гарант|лучш|№ ?1|скидк|цен[аы]",re.I)
 def post(url,body,timeout=180):
     req=urllib.request.Request(url+("&" if "?" in url else "?")+"key="+KEY,data=json.dumps(body).encode(),headers={"Content-Type":"application/json"})
     last=None
@@ -78,7 +78,9 @@ def write_text():
           "generationConfig":{"temperature":0.8,"responseMimeType":"application/json","responseSchema":{"type":"OBJECT","properties":{
             "voice":{"type":"STRING"},"lines":{"type":"ARRAY","items":{"type":"STRING"}},"caption":{"type":"STRING"}},"required":["voice","lines","caption"]}}}
     for _ in range(3):
-        r=post(GAPI+TEXT_MODEL+":generateContent",body)
+        try: r=post(GAPI+TEXT_MODEL+":generateContent",body)
+        except Exception as e:   # модель перегружена — запасная модель
+            print("Текст: запасная модель:",str(e)[:150]); r=post(GAPI+"gemini-flash-latest:generateContent",body)
         o=json.loads("".join(x.get("text","") for x in r["candidates"][0]["content"]["parts"]))
         txt=o["voice"]+" "+" ".join(o["lines"])+" "+o["caption"]
         if PRODKEY=="omevit_kids": txt=re.sub(r"дет(ям|ей|и)\s+(от|старше)\s+\d+|для детей",'',txt)   # «детям от 3 лет» разрешено
