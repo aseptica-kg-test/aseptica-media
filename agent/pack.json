@@ -49,7 +49,7 @@
     "как правильно закапывать и хранить"
    ],
    "footer": "Витолин, капли глазные 10 мл. Медицинское изделие. Рег. удостоверение МИ-KG-2751. Проконсультируйтесь с врачом. Имеются противопоказания: повышенная чувствительность к компонентам. Прочитайте инструкцию.",
-   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/products/vitolin.jpg?v=202611231051"
+   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/products/vitolin.jpg?v=202611231631"
   },
   {
    "key": "forte",
@@ -79,7 +79,7 @@
     "как правильно закапывать и хранить"
    ],
    "footer": "Витолин ФОРТЕ, капли глазные 10 мл. Медицинское изделие. Рег. удостоверение МИ-KG-2807. Проконсультируйтесь с врачом. Имеются противопоказания: повышенная чувствительность к компонентам. Прочитайте инструкцию.",
-   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/products/forte.jpg?v=202611231051"
+   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/products/forte.jpg?v=202611231631"
   },
   {
    "key": "oftalron",
@@ -106,7 +106,7 @@
     "как правильно закапывать и хранить"
    ],
    "footer": "Офтальрон, капли глазные 10 мл. Медицинское изделие. Рег. удостоверение МИ-KG-2753. Проконсультируйтесь с врачом. Имеются противопоказания: повышенная чувствительность к компонентам. Прочитайте инструкцию.",
-   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/products/oftalron.jpg?v=202611231051"
+   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/products/oftalron.jpg?v=202611231631"
   },
   {
    "key": "oftalron_p",
@@ -133,7 +133,7 @@
     "как правильно закапывать и хранить"
    ],
    "footer": "Офтальрон-П, капли глазные 10 мл. Медицинское изделие. Рег. удостоверение МИ-KG-2750. Проконсультируйтесь с врачом. Имеются противопоказания: повышенная чувствительность к компонентам. Прочитайте инструкцию.",
-   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/products/oftalron_p.jpg?v=202611231051"
+   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/products/oftalron_p.jpg?v=202611231631"
   },
   {
    "key": "keraton",
@@ -163,7 +163,7 @@
     "хранение и срок после вскрытия"
    ],
    "footer": "Кератон, капли глазные. Медицинское изделие. Рег. удостоверение МИ-KG-3252. Проконсультируйтесь с врачом. Имеются противопоказания: повышенная чувствительность к компонентам. Прочитайте инструкцию.",
-   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/products/keraton.jpg?v=202611231051"
+   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/products/keraton.jpg?v=202611231631"
   },
   {
    "key": "dakrocin",
@@ -191,7 +191,7 @@
     "хранение и 3 месяца после вскрытия"
    ],
    "footer": "Дакроцин, капли глазные. Медицинское изделие. Рег. удостоверение МИ-KG-3253. Проконсультируйтесь с врачом. Имеются противопоказания: повышенная чувствительность к компонентам. Прочитайте инструкцию.",
-   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/products/dakrocin.jpg?v=202611231051"
+   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/products/dakrocin.jpg?v=202611231631"
   }
  ],
  "tips": [
@@ -202,7 +202,7 @@
    "source": "Американская академия офтальмологии",
    "note": "Писать «поможет дать глазам отдых», не «защитит».",
    "product": "vitolin",
-   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip01.jpg?v=202611231051"
+   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip01.jpg?v=202611231631"
   },
   {
    "num": "02",
@@ -211,7 +211,7 @@
    "source": "Американская академия офтальмологии",
    "note": "",
    "product": "forte",
-   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip02.jpg?v=202611231051"
+   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip02.jpg?v=202611231631"
   },
   {
    "num": "03",
@@ -220,7 +220,7 @@
    "source": "Д-р Аншел, оптометрист",
    "note": "Правило «3Б» из утверждённого списка.",
    "product": "oftalron",
-   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip03.jpg?v=202611231051"
+   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip03.jpg?v=202611231631"
   },
   {
    "num": "04",
@@ -229,7 +229,7 @@
    "source": "Американская академия офтальмологии",
    "note": "",
    "product": "oftalron_p",
-   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip04.jpg?v=202611231051"
+   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip04.jpg?v=202611231631"
   },
   {
    "num": "05",
@@ -238,7 +238,7 @@
    "source": "University of Utah Health",
    "note": "",
    "product": "keraton",
-   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip05.jpg?v=202611231051"
+   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip05.jpg?v=202611231631"
   },
   {
    "num": "06",
@@ -247,7 +247,7 @@
    "source": "Американская ассоциация оптометристов",
    "note": "",
    "product": "dakrocin",
-   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip06.jpg?v=202611231051"
+   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip06.jpg?v=202611231631"
   },
   {
    "num": "07",
@@ -256,7 +256,7 @@
    "source": "Американская академия офтальмологии",
    "note": "",
    "product": "vitolin",
-   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip07.jpg?v=202611231051"
+   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip07.jpg?v=202611231631"
   },
   {
    "num": "08",
@@ -265,7 +265,7 @@
    "source": "Американская ассоциация оптометристов",
    "note": "",
    "product": "forte",
-   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip08.jpg?v=202611231051"
+   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip08.jpg?v=202611231631"
   },
   {
    "num": "09",
@@ -274,7 +274,7 @@
    "source": "Американская ассоциация оптометристов",
    "note": "",
    "product": "oftalron",
-   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip09.jpg?v=202611231051"
+   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip09.jpg?v=202611231631"
   },
   {
    "num": "10",
@@ -283,7 +283,7 @@
    "source": "NPR Life Kit",
    "note": "",
    "product": "oftalron_p",
-   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip10.jpg?v=202611231051"
+   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip10.jpg?v=202611231631"
   },
   {
    "num": "11",
@@ -292,7 +292,7 @@
    "source": "Правительство Гонконга, 2025",
    "note": "",
    "product": "keraton",
-   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip11.jpg?v=202611231051"
+   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip11.jpg?v=202611231631"
   },
   {
    "num": "12",
@@ -301,7 +301,7 @@
    "source": "Американская академия офтальмологии",
    "note": "",
    "product": "dakrocin",
-   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip12.jpg?v=202611231051"
+   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip12.jpg?v=202611231631"
   },
   {
    "num": "13",
@@ -310,7 +310,7 @@
    "source": "Американская академия офтальмологии",
    "note": "",
    "product": "vitolin",
-   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip13.jpg?v=202611231051"
+   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip13.jpg?v=202611231631"
   },
   {
    "num": "14",
@@ -319,7 +319,7 @@
    "source": "Американская академия офтальмологии",
    "note": "",
    "product": "forte",
-   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip14.jpg?v=202611231051"
+   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip14.jpg?v=202611231631"
   },
   {
    "num": "15",
@@ -328,7 +328,7 @@
    "source": "Американская академия офтальмологии",
    "note": "",
    "product": "oftalron",
-   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip15.jpg?v=202611231051"
+   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip15.jpg?v=202611231631"
   },
   {
    "num": "16",
@@ -337,7 +337,7 @@
    "source": "Американская медицинская ассоциация",
    "note": "",
    "product": "oftalron_p",
-   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip16.jpg?v=202611231051"
+   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip16.jpg?v=202611231631"
   },
   {
    "num": "17",
@@ -346,7 +346,7 @@
    "source": "Американская академия офтальмологии",
    "note": "Не упоминать препараты в тексте совета.",
    "product": "keraton",
-   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip17.jpg?v=202611231051"
+   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip17.jpg?v=202611231631"
   },
   {
    "num": "18",
@@ -355,7 +355,7 @@
    "source": "Американская академия офтальмологии",
    "note": "Не упоминать препараты в тексте совета.",
    "product": "dakrocin",
-   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip18.jpg?v=202611231051"
+   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip18.jpg?v=202611231631"
   },
   {
    "num": "19",
@@ -364,7 +364,7 @@
    "source": "Американская медицинская ассоциация",
    "note": "Мыть и менять — две разные вещи.",
    "product": "vitolin",
-   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip19.jpg?v=202611231051"
+   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip19.jpg?v=202611231631"
   },
   {
    "num": "20",
@@ -373,7 +373,7 @@
    "source": "University of Miami Health",
    "note": "",
    "product": "forte",
-   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip20.jpg?v=202611231051"
+   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip20.jpg?v=202611231631"
   },
   {
    "num": "21",
@@ -382,7 +382,7 @@
    "source": "Американская медицинская ассоциация",
    "note": "",
    "product": "oftalron",
-   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip21.jpg?v=202611231051"
+   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip21.jpg?v=202611231631"
   },
   {
    "num": "22",
@@ -391,7 +391,7 @@
    "source": "Американская академия офтальмологии",
    "note": "",
    "product": "oftalron_p",
-   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip22.jpg?v=202611231051"
+   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip22.jpg?v=202611231631"
   },
   {
    "num": "23",
@@ -400,7 +400,7 @@
    "source": "Kaiser Permanente",
    "note": "Без цифр о частоте.",
    "product": "keraton",
-   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip23.jpg?v=202611231051"
+   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip23.jpg?v=202611231631"
   },
   {
    "num": "24",
@@ -409,7 +409,7 @@
    "source": "Американская академия офтальмологии",
    "note": "",
    "product": "dakrocin",
-   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip24.jpg?v=202611231051"
+   "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/tips/tip24.jpg?v=202611231631"
   }
  ],
  "hashtags_ru": "#Aseptica #здоровьеглаз #Бишкек",
@@ -421,7 +421,7 @@
     "name": "Новый год",
     "tone": "joy",
     "note": "",
-    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/new_year.jpg?v=202611231051",
+    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/new_year.jpg?v=202611231631",
     "fixed": "01-01"
    },
    {
@@ -429,7 +429,7 @@
     "name": "День защитника Отечества",
     "tone": "joy",
     "note": "",
-    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/feb23.jpg?v=202611231051",
+    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/feb23.jpg?v=202611231631",
     "fixed": "02-23"
    },
    {
@@ -437,7 +437,7 @@
     "name": "Международный женский день",
     "tone": "joy",
     "note": "",
-    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/mar8.jpg?v=202611231051",
+    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/mar8.jpg?v=202611231631",
     "fixed": "03-08"
    },
    {
@@ -445,7 +445,7 @@
     "name": "Нооруз",
     "tone": "joy",
     "note": "",
-    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/nooruz.jpg?v=202611231051",
+    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/nooruz.jpg?v=202611231631",
     "fixed": "03-21"
    },
    {
@@ -453,7 +453,7 @@
     "name": "Всемирный день здоровья",
     "tone": "joy",
     "note": "Это день ВОЗ о здоровье; не упоминай события 7 апреля 2010 года.",
-    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/health_day.jpg?v=202611231051",
+    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/health_day.jpg?v=202611231631",
     "fixed": "04-07"
    },
    {
@@ -461,7 +461,7 @@
     "name": "Праздник труда",
     "tone": "joy",
     "note": "",
-    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/may1.jpg?v=202611231051",
+    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/may1.jpg?v=202611231631",
     "fixed": "05-01"
    },
    {
@@ -469,7 +469,7 @@
     "name": "День Конституции Кыргызской Республики",
     "tone": "joy",
     "note": "",
-    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/constitution.jpg?v=202611231051",
+    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/constitution.jpg?v=202611231631",
     "fixed": "05-05"
    },
    {
@@ -477,7 +477,7 @@
     "name": "День Победы",
     "tone": "respect",
     "note": "Сдержанно и с уважением: память и благодарность ветеранам, без веселья и эмодзи-конфетти.",
-    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/victory.jpg?v=202611231051",
+    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/victory.jpg?v=202611231631",
     "fixed": "05-09"
    },
    {
@@ -485,7 +485,7 @@
     "name": "День Независимости Кыргызской Республики",
     "tone": "joy",
     "note": "",
-    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/independence.jpg?v=202611231051",
+    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/independence.jpg?v=202611231631",
     "fixed": "08-31"
    },
    {
@@ -493,7 +493,7 @@
     "name": "Дни истории и памяти предков",
     "tone": "memory",
     "note": "",
-    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/memory.jpg?v=202611231051",
+    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/memory.jpg?v=202611231631",
     "fixed": "11-07"
    },
    {
@@ -501,7 +501,7 @@
     "name": "Орозо айт",
     "tone": "joy",
     "note": "Уважительно, без религиозных деталей, которые могут быть неточными.",
-    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/orozo_ait.jpg?v=202611231051",
+    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/orozo_ait.jpg?v=202611231631",
     "approx": true,
     "dates": {
      "2027": "2027-03-09"
@@ -512,7 +512,7 @@
     "name": "Курман айт",
     "tone": "joy",
     "note": "Уважительно, без религиозных деталей, которые могут быть неточными.",
-    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/kurman_ait.jpg?v=202611231051",
+    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/kurman_ait.jpg?v=202611231631",
     "approx": true,
     "dates": {
      "2027": "2027-05-16"
@@ -523,7 +523,7 @@
     "name": "Международный день медицинских сестёр",
     "tone": "joy",
     "note": "Поблагодари медсестёр и медбратьев за заботу.",
-    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/nurses.jpg?v=202611231051",
+    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/nurses.jpg?v=202611231631",
     "fixed": "05-12"
    },
    {
@@ -531,7 +531,7 @@
     "name": "День медицинского работника Кыргызстана",
     "tone": "joy",
     "note": "Поблагодари врачей и всех медицинских работников.",
-    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/medic.jpg?v=202611231051",
+    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/medic.jpg?v=202611231631",
     "nth": {
      "month": 7,
      "weekday": 7,
@@ -543,7 +543,7 @@
     "name": "Международный день офтальмологии",
     "tone": "joy",
     "note": "Поблагодари офтальмологов за заботу о зрении людей.",
-    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/ophthalmology.jpg?v=202611231051",
+    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/ophthalmology.jpg?v=202611231631",
     "fixed": "08-08"
    },
    {
@@ -551,7 +551,7 @@
     "name": "Всемирный день фармацевта",
     "tone": "joy",
     "note": "Поблагодари фармацевтов и провизоров.",
-    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/pharmacist.jpg?v=202611231051",
+    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/pharmacist.jpg?v=202611231631",
     "fixed": "09-25"
    },
    {
@@ -559,7 +559,7 @@
     "name": "Всемирный день зрения",
     "tone": "joy",
     "note": "Можно напомнить беречь глаза и проходить осмотр у офтальмолога; без медицинских обещаний.",
-    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/sight_day.jpg?v=202611231051",
+    "image": "https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/posts/holidays/sight_day.jpg?v=202611231631",
     "nth": {
      "month": 10,
      "weekday": 4,
@@ -616,5 +616,14 @@
   "holidays/ophthalmology.jpg": "#ДеньОфтальмологии #Кыргызстан",
   "holidays/pharmacist.jpg": "#ДеньФармацевта #Кыргызстан",
   "holidays/sight_day.jpg": "#ДеньЗрения #Кыргызстан"
+ },
+ "tts_pronounce": {
+  "Офтальрон[- ]П\\b": "Офтальро́н Пэ",
+  "Офтальрон(\\w*)": "Офтальро́н\\1",
+  "Витолин(\\w*) ФОРТЕ": "Витоли́н\\1 фо́рте",
+  "Витолин(\\w*) Форте": "Витоли́н\\1 фо́рте",
+  "Витолин(\\w*)": "Витоли́н\\1",
+  "Кератон(\\w*)": "Керато́н\\1",
+  "Дакроцин(\\w*)": "Дакроци́н\\1"
  }
 }
