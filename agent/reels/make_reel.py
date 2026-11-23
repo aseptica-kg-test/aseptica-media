@@ -65,17 +65,17 @@ def write_text():
 def tts(text):
     if MOCK:
         sr=24000; t=np.arange(int(sr*14))/sr; return (np.sin(2*np.pi*220*t)*0.0).astype(np.float32),sr
-    err=None
+    err=[]
     for m in TTS_MODELS:
         try:
             r=post(GAPI+m+":generateContent",{"contents":[{"parts":[{"text":"Прочитай спокойно, дружелюбно и чётко, в умеренном темпе: "+text}]}],
-                "generationConfig":{"responseModalities":["AUDIO"],"speechConfig":{"voiceConfig":{"prebuiltVoiceConfig":{"voiceName":VOICE}}}}})
+                "generationConfig":{"responseModalities":["AUDIO"],"speechConfig":{"languageCode":"ru-RU","voiceConfig":{"prebuiltVoiceConfig":{"voiceName":VOICE}}}}})
             part=next(x for x in r["candidates"][0]["content"]["parts"] if "inlineData" in x)["inlineData"]
             sr=int(re.search(r"rate=(\d+)",part.get("mimeType","rate=24000")).group(1))
             pcm=np.frombuffer(base64.b64decode(part["data"]),dtype="<i2").astype(np.float32)/32768
             return pcm,sr
-        except Exception as e: err="%s: %s"%(m,e)
-    raise RuntimeError("Озвучка не удалась — "+str(err))
+        except Exception as e: err.append("%s: %s"%(m,e))
+    raise RuntimeError("Озвучка не удалась — "+" || ".join(err))
 def music(sec,sr=48000):
     # своя спокойная фоновая музыка: мягкие аккорды C–Am–F–G
     t=np.arange(int(sec*sr))/sr; out=np.zeros_like(t)
