@@ -40,9 +40,9 @@ elif REQ.get("topic","").startswith("tip:"):
 if isP:
     p=pack["products"][k%len(pack["products"])]; key=p["key"]
     angle=p["angles"][(k//len(pack["products"]))%len(p["angles"])]
-    PRODKEY=key; PRODNAME=p["name"]; PRODSUB=next((f.split(":",1)[1].strip() for f in p["facts"] if f.startswith("Состав")),"")[:80]; KINDS=["brand"]
+    PRODKEY=key; PRODNAME=p["name"]; PRODSUB=next((f.split(":",1)[1].strip() for f in p["facts"] if f.startswith(("Состав","Капсула «Б»"))),"")[:80]; KINDS=["brand"]
     img_rel="posts/products/%s.jpg"%key; footer=p["footer"]; title="Reels: "+p["name"]+" — "+angle
-    color={"vitolin":(240,130,40),"forte":(46,160,90),"oftalron":(220,40,130),"oftalron_p":(225,45,50),"keraton":(110,90,200),"dakrocin":(240,165,10)}[key]
+    color={"vitolin":(240,130,40),"forte":(46,160,90),"oftalron":(220,40,130),"oftalron_p":(225,45,50),"keraton":(110,90,200),"dakrocin":(240,165,10),"omevit":(70,60,170),"omevit_kids":(0,150,165)}[key]
     task=("Тема ролика: продукт «%s», %s.\n"%(p["name"],angle)+("Только информационно: название, состав, применение, хранение.\n" if p.get("info_only") else "")+
           "ФАКТЫ (только они):\n- "+"\n- ".join(p["facts"]+R["common_allowed"])+"\nДля продукта ЗАПРЕЩЕНО: "+"; ".join(p["no"])+".")
 else:
@@ -80,7 +80,9 @@ def write_text():
     for _ in range(3):
         r=post(GAPI+TEXT_MODEL+":generateContent",body)
         o=json.loads("".join(x.get("text","") for x in r["candidates"][0]["content"]["parts"]))
-        if not BAD.search(o["voice"]+" "+" ".join(o["lines"])+" "+o["caption"]): return o
+        txt=o["voice"]+" "+" ".join(o["lines"])+" "+o["caption"]
+        if PRODKEY=="omevit_kids": txt=re.sub(r"дет(ям|ей|и)\s+(от|старше)\s+\d+|для детей",'',txt)   # «детям от 3 лет» разрешено
+        if not BAD.search(txt): return o
     o["warning"]="Проверьте текст: найдено запрещённое слово"; return o
 def say_fix(text):
     for a,b in (pack.get("tts_pronounce") or {}).items(): text=re.sub(a,b,text)
