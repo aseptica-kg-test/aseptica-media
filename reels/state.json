@@ -1,10 +1,15 @@
 {
- "counter": 1,
+ "counter": 2,
  "history": [
   {
    "slot": 0,
    "file": "reels/reel_20261123-0819.mp4",
    "title": "Reels: Витолин — знакомство с продуктом"
+  },
+  {
+   "slot": 1,
+   "file": "reels/reel_20261123-0833.mp4",
+   "title": "Reels: совет — Дайте глазам отдых за экраном"
   }
  ]
 }
