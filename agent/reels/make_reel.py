@@ -21,13 +21,13 @@ if os.environ.get("GITHUB_EVENT_NAME")=="push" or "--sample" in sys.argv:
     if os.path.exists(rq):
         for tok in open(rq,encoding="utf-8").read().split():
             if "=" in tok: a,b=tok.split("=",1); REQ[a]=b
-SAMPLE=bool(REQ)
+SAMPLE=bool(REQ) and REQ.get("prod")!="1"   # prod=1 — настоящий ролик (как по расписанию)
 STYLE=REQ.get("style",os.environ.get("REEL_STYLE","infographic"))
 R=pack["rules"]
 statef=os.path.join(ROOT,"reels","state.json")
 state=json.load(open(statef)) if os.path.exists(statef) else {"counter":0,"history":[]}
 n=state["counter"]; isP=(n%2==0); k=n//2
-if not REQ:   # по расписанию: вт и сб — инфографика о препарате, чт — мультик-совет (решение владельца 23.11.2026)
+if not REQ.get("topic"):   # по расписанию: вт и сб — инфографика о препарате, чт — мультик-совет (решение владельца 23.11.2026)
     wd=(datetime.datetime.now(datetime.timezone.utc)+datetime.timedelta(hours=6)).weekday()   # день сборки (Бишкек)
     isP = wd!=2   # сборка в среду → ролик на четверг (совет)
     STYLE = "infographic" if isP else "mascot"
