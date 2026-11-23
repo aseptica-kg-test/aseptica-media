@@ -2,6 +2,7 @@
 # Запускается на GitHub Actions. Локальная проверка без интернета: python3 make_reel.py --mock
 import os, sys, json, base64, math, random, re, subprocess, datetime, wave, struct, urllib.request, urllib.error
 import numpy as np
+sys.path.insert(0,os.path.dirname(os.path.abspath(__file__)))
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 ROOT=os.path.abspath(os.path.join(os.path.dirname(__file__),"..",".."))
 HERE=os.path.dirname(os.path.abspath(__file__))
@@ -14,20 +15,34 @@ W,H,FPS=1080,1920,25
 RAW="https://raw.githubusercontent.com/aseptica-kg-test/aseptica-media/main/"
 def F(w,s): return ImageFont.truetype(os.path.join(HERE,"fonts","Inter-%s.otf"%w),s)
 pack=json.load(open(os.path.join(ROOT,"agent","pack.json"),encoding="utf-8"))
+REQ={}
+rq=os.path.join(ROOT,"reels","request.txt")
+if os.environ.get("GITHUB_EVENT_NAME")=="push" or "--sample" in sys.argv:
+    if os.path.exists(rq):
+        for tok in open(rq,encoding="utf-8").read().split():
+            if "=" in tok: a,b=tok.split("=",1); REQ[a]=b
+SAMPLE=bool(REQ)
+STYLE=REQ.get("style",os.environ.get("REEL_STYLE","infographic"))
 R=pack["rules"]
 statef=os.path.join(ROOT,"reels","state.json")
 state=json.load(open(statef)) if os.path.exists(statef) else {"counter":0,"history":[]}
 n=state["counter"]; isP=(n%2==0); k=n//2
+if REQ.get("topic","").startswith("product:"):
+    isP=True; k=[x["key"] for x in pack["products"]].index(REQ["topic"].split(":")[1])
+elif REQ.get("topic","").startswith("tip:"):
+    isP=False; k=int(REQ["topic"].split(":")[1])-1
 # ---------- тема ----------
 if isP:
     p=pack["products"][k%len(pack["products"])]; key=p["key"]
     angle=p["angles"][(k//len(pack["products"]))%len(p["angles"])]
+    PRODKEY=key; PRODNAME=p["name"]; PRODSUB=next((f.split(":",1)[1].strip() for f in p["facts"] if f.startswith("Состав")),"")[:80]; KINDS=["brand"]
     img_rel="posts/products/%s.jpg"%key; footer=p["footer"]; title="Reels: "+p["name"]+" — "+angle
     color={"vitolin":(240,130,40),"forte":(46,160,90),"oftalron":(220,40,130),"oftalron_p":(225,45,50),"keraton":(110,90,200),"dakrocin":(240,165,10)}[key]
     task=("Тема ролика: продукт «%s», %s.\n"%(p["name"],angle)+("Только информационно: название, состав, применение, хранение.\n" if p.get("info_only") else "")+
           "ФАКТЫ (только они):\n- "+"\n- ".join(p["facts"]+R["common_allowed"])+"\nДля продукта ЗАПРЕЩЕНО: "+"; ".join(p["no"])+".")
 else:
-    i=k%len(pack["tips"]); t=pack["tips"][i]; pkey=t["product"]; p=next(x for x in pack["products"] if x["key"]==pkey)
+    i=k%len(pack["tips"]); t=pack["tips"][i]; tipobj=t; pkey=t["product"]; p=next(x for x in pack["products"] if x["key"]==pkey)
+    PRODKEY=pkey; PRODNAME=p["name"]; PRODSUB=""; KINDS=["office","window","brand"] if i<11 else ["window","window","brand"]
     img_rel="posts/tips/tip%02d.jpg"%(i+1); footer=p["footer"]; title="Reels: совет — "+t["title"]; color=(0,115,187)
     task=("Тема ролика: совет для глаз «%s. %s» (источник: %s). %s\n"%(t["title"],t["body"],t["source"],t.get("note",""))+
           "Раскрой совет простыми словами, без новых медицинских фактов, не связывай с каплями.")
@@ -64,7 +79,7 @@ def write_text():
     o["warning"]="Проверьте текст: найдено запрещённое слово"; return o
 def tts(text):
     if MOCK:
-        sr=24000; t=np.arange(int(sr*14))/sr; return (np.sin(2*np.pi*220*t)*0.0).astype(np.float32),sr
+        sr=24000; t=np.arange(int(sr*14))/sr; return (np.sin(2*np.pi*220*t)*0.3*(np.sin(2*np.pi*3*t)>0)).astype(np.float32),sr
     err=[]
     for m in TTS_MODELS:
         try:
@@ -95,6 +110,33 @@ def music(sec,sr=48000):
         a=np.exp(-tt/0.35)*np.sin(2*np.pi*arp*tt)*0.25; out[s:e]+=a
     fade=np.minimum(1,np.minimum(t/1.5,(sec-t)/1.5)); out*=fade
     return out/ (np.max(np.abs(out))+1e-9),sr
+def render_new(o,voice,dur,sr):
+    import styles
+    sents=[x.strip() for x in re.split(r"(?<=[.!?])\s+",o["voice"]) if x.strip()]
+    vstart=0.6; vlen=len(voice)/48000; tot=sum(len(x) for x in sents) or 1; tt=vstart; S=[]
+    for x in sents: dd=vlen*len(x)/tot; S.append((tt,tt+dd,x)); tt+=dd
+    # огибающая громкости для рта талисмана
+    hop=sr//FPS; env=np.array([np.sqrt(np.mean(voice[i*hop:(i+1)*hop]**2)) if i*hop<len(voice) else 0 for i in range(int(dur*FPS)+FPS)])
+    env=env/(env.max()+1e-9)
+    def envf(t):
+        i=int((t-vstart)*FPS); return float(env[i]) if 0<=i<len(env) else 0.0
+    logo=Image.open(os.path.join(ROOT,"brand","aseptica_logo_white.png")); lw=380; logo=logo.resize((lw,int(logo.height*lw/logo.width)),Image.LANCZOS)
+    lb=Image.open(os.path.join(ROOT,"brand","aseptica_logo_blue.png")); lb=lb.resize((lw,int(lb.height*lw/lb.width)),Image.LANCZOS)
+    pk=PRODKEY; box=Image.open(os.path.join(ROOT,"packshots","%s_box.png"%{"forte":"vitolin_forte"}.get(pk,pk))).convert("RGBA"); box=box.crop(box.getbbox())
+    bh=620; bw=int(box.width*bh/box.height)
+    if bw>620: bw=620; bh=int(box.height*bw/box.width)
+    box=box.resize((bw,bh),Image.LANCZOS)
+    end_voice=vstart+vlen
+    if STYLE=="infographic":
+        ends=[vstart+vlen*0.28,vstart+vlen*0.62,end_voice+0.3,dur+1]
+    else:
+        ends=[vstart+vlen*0.45,end_voice,dur+1]
+    ctx={"color":color,"lines":(o["lines"]+["","",""])[:3],"sentences":S,"dur":dur,"box":box,"name":PRODNAME,"sub":PRODSUB,
+         "logo":logo,"logo_blue":lb,"footer":footer,"scene_ends":ends,"env":envf,"kinds":KINDS}
+    fpath="/tmp/reel/f%05d.jpg"
+    for fi in range(int(dur*FPS)):
+        fr=(styles.infographic_frame if STYLE=="infographic" else styles.mascot_frame)(ctx,fi/FPS); fr.save(fpath%fi,quality=88)
+    finish(o,fpath,dur)
 def wrap(d,txt,f,mw):
     L=[];cur=""
     for w in txt.split():
@@ -113,6 +155,8 @@ def main():
     mix=np.clip(mix,-1,1)
     os.makedirs("/tmp/reel",exist_ok=True)
     with wave.open("/tmp/reel/a.wav","wb") as w: w.setnchannels(1); w.setsampwidth(2); w.setframerate(sr); w.writeframes((mix*32767).astype("<i2").tobytes())
+    if STYLE in ("infographic","mascot"):
+        return render_new(o,voice,dur,sr)
     # картинки
     card=Image.open(os.path.join(ROOT,img_rel)).convert("RGB")
     logo=Image.open(os.path.join(ROOT,"brand","aseptica_logo_white.png"))
@@ -145,7 +189,11 @@ def main():
             d.text(((W-tw)/2,330),txt,font=f2,fill=(255,255,255,int(255*a)))
             f3=F("Medium",36); s="Перед применением прочитайте инструкцию"; tw=d.textlength(s,font=f3); d.text(((W-tw)/2,430),s,font=f3,fill=(255,255,255,int(235*a)))
         im.convert("RGB").save(fpath%fi,quality=88)
-    stamp=datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%d-%H%M"); rel="reels/reel_%s.mp4"%stamp
+    finish(o,fpath,dur)
+def finish(o,fpath,dur):
+    stamp=datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%d-%H%M")
+    rel=("reels/samples/%s_%s.mp4"%(STYLE,stamp)) if SAMPLE else ("reels/reel_%s.mp4"%stamp)
+    os.makedirs(os.path.join(ROOT,os.path.dirname(rel)),exist_ok=True)
     subprocess.run(["ffmpeg","-y","-loglevel","error","-framerate",str(FPS),"-i",fpath,"-i","/tmp/reel/a.wav","-c:v","libx264","-preset","veryfast","-crf","21",
                     "-pix_fmt","yuv420p","-c:a","aac","-b:a","160k","-ar","48000","-shortest","-movflags","+faststart",os.path.join(ROOT,rel)],check=True)
     for f in os.listdir("/tmp/reel"):
@@ -154,6 +202,9 @@ def main():
     caption=o["caption"].strip()+"\n\n"+footer+"\n\n"+tags
     info={"created":stamp,"title":title,"video_url":RAW+rel,"caption":caption,"voice_text":o["voice"],"lines":o["lines"],
           "warning":o.get("warning",""),"used":False,"slot":n}
+    if SAMPLE:
+        json.dump(info,open(os.path.join(ROOT,"reels","samples","%s_latest.json"%STYLE),"w",encoding="utf-8"),ensure_ascii=False,indent=1)
+        print("OK sample",rel); return
     json.dump(info,open(os.path.join(ROOT,"reels","latest.json"),"w",encoding="utf-8"),ensure_ascii=False,indent=1)
     state["counter"]=n+1; state["history"]=(state.get("history",[])+[{"slot":n,"file":rel,"title":title}])[-30:]
     json.dump(state,open(statef,"w"),ensure_ascii=False,indent=1)
