@@ -113,7 +113,10 @@ def subtitles(im,ctx,t):
     d=ImageDraw.Draw(im,"RGBA")
     for s,e,txt in ctx["sentences"]:
         if s<=t<e:
-            f=F("SemiBold",40); L=wrap(d,txt,f,W-160)[:3]; h=len(L)*52+36; y0=1520
+            f=F("SemiBold",40); L=wrap(d,txt,f,W-160)
+            if len(L)>3:   # длинную фразу показываем частями по 2 строки
+                parts=[L[i:i+2] for i in range(0,len(L),2)]; L=parts[min(len(parts)-1,int((t-s)/(e-s)*len(parts)))]
+            h=len(L)*52+36; y0=1520
             d.rounded_rectangle([60,y0,W-60,y0+h],28,fill=(0,0,0,110)); yy=y0+18
             for ln in L: d.text(((W-d.textlength(ln,font=f))/2,yy),ln,font=f,fill=(255,255,255)); yy+=52
 def footer(im,ctx):
