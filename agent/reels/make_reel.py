@@ -28,8 +28,10 @@ statef=os.path.join(ROOT,"reels","state.json")
 state=json.load(open(statef)) if os.path.exists(statef) else {"counter":0,"history":[]}
 n=state["counter"]; isP=(n%2==0); k=n//2
 if not REQ.get("topic"):   # по расписанию: вт и сб — инфографика о препарате, чт — мультик-совет (решение владельца 23.11.2026)
-    wd=(datetime.datetime.now(datetime.timezone.utc)+datetime.timedelta(hours=6)).weekday()   # день сборки (Бишкек)
-    isP = wd!=2   # сборка в среду → ролик на четверг (совет)
+    now6=datetime.datetime.now(datetime.timezone.utc)+datetime.timedelta(hours=6); wd=now6.weekday()   # день сборки (Бишкек)
+    if state.get("day")==now6.strftime("%Y-%m-%d"):   # утром несколько попыток: ролик на сегодня уже есть
+        print("Ролик на сегодня уже собран — пропуск"); sys.exit(0)
+    isP = wd!=3   # сборка в четверг утром → совет с капелькой; вт и сб — препарат
     STYLE = "infographic" if isP else "mascot"
     k = state.get("p",0) if isP else state.get("t",0)
 if REQ.get("topic","").startswith("product:"):
@@ -225,6 +227,7 @@ def finish(o,fpath,dur):
         print("OK sample",rel); return
     json.dump(info,open(os.path.join(ROOT,"reels","latest.json"),"w",encoding="utf-8"),ensure_ascii=False,indent=1)
     state["counter"]=n+1
+    if not REQ.get("topic"): state["day"]=(datetime.datetime.now(datetime.timezone.utc)+datetime.timedelta(hours=6)).strftime("%Y-%m-%d")
     if isP: state["p"]=state.get("p",0)+1
     else: state["t"]=state.get("t",0)+1
     state["history"]=(state.get("history",[])+[{"slot":n,"file":rel,"title":title}])[-30:]
