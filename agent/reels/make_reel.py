@@ -68,7 +68,7 @@ def tts(text):
     err=[]
     for m in TTS_MODELS:
         try:
-            r=post(GAPI+m+":generateContent",{"contents":[{"parts":[{"text":"Прочитай спокойно, дружелюбно и чётко, в умеренном темпе: "+text}]}],
+            r=post(GAPI+m+":generateContent",{"contents":[{"parts":[{"text":text}]}],
                 "generationConfig":{"responseModalities":["AUDIO"],"speechConfig":{"languageCode":"ru-RU","voiceConfig":{"prebuiltVoiceConfig":{"voiceName":VOICE}}}}})
             part=next(x for x in r["candidates"][0]["content"]["parts"] if "inlineData" in x)["inlineData"]
             mime=part.get("mimeType",""); raw=base64.b64decode(part["data"]); print("TTS", m, mime, len(raw))
