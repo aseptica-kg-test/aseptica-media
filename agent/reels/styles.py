@@ -125,26 +125,39 @@ def footer(im,ctx):
     d.rectangle([0,y-20,W,H],fill=(255,255,255,235))
     for ln in L: d.text((60,y),ln,font=f,fill=(80,90,105)); y+=30
 # ============ 2. МУЛЬТИК: ТАЛИСМАН-КАПЕЛЬКА ============
-def mascot(d,cx,cy,s,t,talk,look=(0,0),blink=False,wave=0):
-    body=(120,200,245); dark=(30,100,170)
-    # тело-капля
-    d.ellipse([cx-s,cy-s*0.8,cx+s,cy+s*1.2],fill=body); d.polygon([(cx-s*0.86,cy-s*0.2),(cx+s*0.86,cy-s*0.2),(cx,cy-s*1.9)],fill=body)
-    d.ellipse([cx-s*0.6,cy-s*0.5,cx-s*0.2,cy-s*0.05],fill=(200,235,255))   # блик
-    # глаза
-    for ex in (-0.35,0.35):
-        x=cx+ex*s; y=cy+0.1*s
-        if blink: d.line([(x-s*0.17,y),(x+s*0.17,y)],fill=dark,width=int(s*0.06))
-        else:
-            d.ellipse([x-s*0.2,y-s*0.24,x+s*0.2,y+s*0.24],fill=(255,255,255))
-            px=x+look[0]*s*0.09; py=y+look[1]*s*0.09; d.ellipse([px-s*0.1,py-s*0.1,px+s*0.1,py+s*0.1],fill=dark)
-            d.ellipse([px+s*0.02,py-s*0.07,px+s*0.06,py-s*0.03],fill=(255,255,255))
-    # рот: открывается по громкости голоса
-    mo=s*0.05+s*0.2*talk; d.ellipse([cx-s*0.2,cy+s*0.5,cx+s*0.2,cy+s*0.5+mo],fill=dark)
-    d.ellipse([cx-s*0.55,cy+s*0.42,cx-s*0.38,cy+s*0.55],fill=(255,170,190)); d.ellipse([cx+s*0.38,cy+s*0.42,cx+s*0.55,cy+s*0.55],fill=(255,170,190))
-    # ручка машет
-    a=-0.6+math.sin(t*6)*0.5*wave; hx=cx+s*1.0; hy=cy+s*0.5
-    d.line([(cx+s*0.9,cy+s*0.6),(hx+math.cos(a)*s*0.55,hy+math.sin(a)*s*0.55)],fill=body,width=int(s*0.16))
+def mascot(d,cx,cy,s,t,talk,look=(0,0),blink=False,wave=0,outline=False):
+    # Персонаж утверждён 23.11.2026: «Весёлая капелька» (реснички, улыбка, ножки) в цвете «Капельки Aseptica»
+    body=(70,165,225); hl=(170,215,245); dark=(20,80,150)
+    def drop_shape(k,c):
+        d.ellipse([cx-s*k,cy-s*0.8*k-(k-1)*s*0.2,cx+s*k,cy+s*1.2*k-(k-1)*s*0.2],fill=c)
+        d.polygon([(cx-s*0.86*k,cy-s*0.2),(cx+s*0.86*k,cy-s*0.2),(cx,cy-s*1.9-(k-1)*s*1.2)],fill=c)
+    # ножки
+    if outline:
+        drop_shape(1.07,(255,255,255))
+        for fx in (-0.35,0.35): d.ellipse([cx+fx*s-s*0.27,cy+s*1.08,cx+fx*s+s*0.27,cy+s*1.37],fill=(255,255,255))
+    for fx in (-0.35,0.35): d.ellipse([cx+fx*s-s*0.22,cy+s*1.12,cx+fx*s+s*0.22,cy+s*1.32],fill=dark)
+    drop_shape(1.0,body)
+    d.ellipse([cx-s*0.62,cy-s*0.55,cx-s*0.22,cy-s*0.1],fill=hl)
+    # ручки
     d.line([(cx-s*0.9,cy+s*0.6),(cx-s*1.25,cy+s*0.95)],fill=body,width=int(s*0.16))
+    a=-0.9+math.sin(t*6)*0.45*wave; d.line([(cx+s*0.9,cy+s*0.55),(cx+s*0.9+math.cos(a)*s*0.55,cy+s*0.55+math.sin(a)*s*0.55)],fill=body,width=int(s*0.16))
+    # глаза с ресничками и бликами
+    for ex in (-0.35,0.35):
+        x=cx+ex*s; y=cy+0.1*s; rx,ry=s*0.24,s*0.3
+        if blink:
+            d.arc([x-rx,y-ry*0.6,x+rx,y+ry*0.6],20,160,fill=dark,width=int(s*0.06)); continue
+        d.ellipse([x-rx,y-ry,x+rx,y+ry],fill=(255,255,255))
+        px=x+look[0]*rx*0.35; py=y+look[1]*ry*0.3
+        d.ellipse([px-rx*0.6,py-ry*0.45,px+rx*0.6,py+ry*0.75],fill=dark)
+        d.ellipse([px+rx*0.05,py-ry*0.3,px+rx*0.45,py+ry*0.05],fill=(255,255,255)); d.ellipse([px-rx*0.4,py+ry*0.3,px-rx*0.2,py+ry*0.5],fill=(255,255,255))
+        for k in (-1,0,1):
+            ang=-math.pi/2+k*0.5+(0.25 if ex>0 else -0.25); bx=x+math.cos(ang)*rx; by=y+math.sin(ang)*ry
+            d.line([(bx,by),(bx+math.cos(ang)*s*0.13,by+math.sin(ang)*s*0.13)],fill=dark,width=int(s*0.045))
+    # улыбка: открывается по громкости голоса
+    op=s*0.12+s*0.22*talk
+    d.chord([cx-s*0.22,cy+s*0.42-op*0.3,cx+s*0.22,cy+s*0.42+op],0,180,fill=dark)
+    d.chord([cx-s*0.12,cy+s*0.42+op*0.45,cx+s*0.12,cy+s*0.42+op],0,180,fill=(240,120,140))
+    d.ellipse([cx-s*0.62,cy+s*0.36,cx-s*0.4,cy+s*0.5],fill=(255,170,190)); d.ellipse([cx+s*0.4,cy+s*0.36,cx+s*0.62,cy+s*0.5],fill=(255,170,190))
 def scene_bg(kind,t,im):
     d=ImageDraw.Draw(im,"RGBA")
     if kind=="office":
@@ -180,7 +193,7 @@ def mascot_frame(ctx,t):
     talk=ctx["env"](t); blink=(t%3.2)<0.12
     look={"office":(1,0.2),"window":(0.6,-0.8)}.get(kind,(0,0))
     bob=math.sin(t*3)*12; enter=back(t/0.8); cx=300-(1-enter)*500 if kind!="brand" else W/2
-    mascot(d,cx,1250+bob-200,170,t,talk,look,blink,wave=1 if sc==len(ends)-1 or (sc==0 and lt<1.5) else 0)
+    mascot(d,cx,(1290 if kind=="brand" else 1020)+bob,165,t,talk,look,blink,wave=1 if sc==len(ends)-1 or (sc==0 and lt<1.5) else 0,outline=(kind=="brand"))
     # облачко с надписью
     lines=ctx["lines"]; txt=lines[sc] if sc<len(lines) else "Aseptica — забота о глазах"
     if kind=="brand": txt="Aseptica — забота о глазах"
