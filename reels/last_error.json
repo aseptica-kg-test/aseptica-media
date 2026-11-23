@@ -1,0 +1,4 @@
+{
+ "error": "Озвучка не удалась — gemini-3.8-flash-tts: 'NoneType' object has no attribute 'group' || gemini-3.1-flash-tts-preview: HTTP 400: {\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"No matching speaker voice found for name: Nika and language: ru-RU\",\n    \"status\": \"INVALID_ARGUMENT\"\n  }\n}\n",
+ "time": "2026-11-23T08:14:27.084261+00:00"
+}
