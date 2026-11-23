@@ -151,12 +151,17 @@ def scene_bg(kind,t,im):
         for i in range(5): d.rounded_rectangle([570,690+i*45,570+((i*97)%300)+80,712+i*45],8,fill=(255,255,255))
         d.rectangle([740,960,780,1100],fill=(40,50,70)); d.rounded_rectangle([660,1100,860,1130],10,fill=(40,50,70))
     elif kind=="window":
-        d.rectangle([0,0,W,H],fill=(240,236,228)); d.rounded_rectangle([120,300,960,1100],20,fill=(150,205,245))
-        for x0,c in [(60,(120,160,200)),(380,(100,140,185)),(650,(130,170,210))]:
-            d.polygon([(120+x0-60,1100),(120+x0+200,560+(x0%3)*40),(120+x0+460,1100)],fill=c)
-            d.polygon([(120+x0+150,640+(x0%3)*40),(120+x0+200,560+(x0%3)*40),(120+x0+250,640+(x0%3)*40)],fill=(255,255,255))
-        sx=800+math.sin(t*0.5)*20; d.ellipse([sx-60,380,sx+60,500],fill=(255,215,100))
-        d.rectangle([110,290,970,310],fill=(255,255,255)); d.rectangle([110,1090,970,1110],fill=(255,255,255)); d.rectangle([530,300,550,1100],fill=(255,255,255)); d.rectangle([120,690,960,710],fill=(255,255,255))
+        d.rectangle([0,0,W,H],fill=(240,236,228))
+        # вид из окна рисуем отдельно и обрезаем по раме
+        X0,Y0,X1,Y1=120,300,960,1100; v=Image.new("RGB",(X1-X0,Y1-Y0),(150,205,245)); vd=ImageDraw.Draw(v)
+        sx=680+math.sin(t*0.5)*20; vd.ellipse([sx-60,80,sx+60,200],fill=(255,215,100))
+        for x0,h0,c in [(-80,300,(120,160,200)),(230,220,(100,140,185)),(520,280,(130,170,210))]:
+            pk=(x0+230,h0); vd.polygon([(x0-60,Y1-Y0),pk,(x0+520,Y1-Y0)],fill=c)
+            vd.polygon([(pk[0]-50,pk[1]+80),pk,(pk[0]+50,pk[1]+80)],fill=(255,255,255))
+        im.paste(v,(X0,Y0)); d=ImageDraw.Draw(im,"RGBA")
+        d.rectangle([X0-14,Y0-14,X1+14,Y0+6],fill=(255,255,255)); d.rectangle([X0-14,Y1-6,X1+14,Y1+14],fill=(255,255,255))
+        d.rectangle([X0-14,Y0-14,X0+6,Y1+14],fill=(255,255,255)); d.rectangle([X1-6,Y0-14,X1+14,Y1+14],fill=(255,255,255))
+        d.rectangle([(X0+X1)//2-10,Y0,(X0+X1)//2+10,Y1],fill=(255,255,255)); d.rectangle([X0,(Y0+Y1)//2-10,X1,(Y0+Y1)//2+10],fill=(255,255,255))
         d.rectangle([0,1250,W,H],fill=(210,190,165))
     else:  # brand
         im.paste(grad((40,150,215),(0,95,165)),(0,0))
