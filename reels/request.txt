@@ -1,1 +1,1 @@
-style=infographic topic=product:oftalron
+style=mascot topic=tip:1
