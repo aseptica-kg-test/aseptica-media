@@ -1,1 +1,12 @@
-{"counter": 0, "p": 0, "t": 0, "history": []}
+{
+ "counter": 1,
+ "p": 1,
+ "t": 0,
+ "history": [
+  {
+   "slot": 0,
+   "file": "reels/reel_20261123-1050.mp4",
+   "title": "Reels: Витолин — знакомство с продуктом"
+  }
+ ]
+}
