@@ -71,9 +71,13 @@ def tts(text):
             r=post(GAPI+m+":generateContent",{"contents":[{"parts":[{"text":"Прочитай спокойно, дружелюбно и чётко, в умеренном темпе: "+text}]}],
                 "generationConfig":{"responseModalities":["AUDIO"],"speechConfig":{"languageCode":"ru-RU","voiceConfig":{"prebuiltVoiceConfig":{"voiceName":VOICE}}}}})
             part=next(x for x in r["candidates"][0]["content"]["parts"] if "inlineData" in x)["inlineData"]
-            sr=int(re.search(r"rate=(\d+)",part.get("mimeType","rate=24000")).group(1))
-            pcm=np.frombuffer(base64.b64decode(part["data"]),dtype="<i2").astype(np.float32)/32768
-            return pcm,sr
+            mime=part.get("mimeType",""); raw=base64.b64decode(part["data"]); print("TTS", m, mime, len(raw))
+            if "pcm" in mime.lower() or "l16" in mime.lower():
+                mm=re.search(r"rate=(\d+)",mime); sr=int(mm.group(1)) if mm else 24000
+                return np.frombuffer(raw,dtype="<i2").astype(np.float32)/32768, sr
+            open("/tmp/tts.bin","wb").write(raw)   # wav/mp3/ogg → через ffmpeg
+            subprocess.run(["ffmpeg","-y","-loglevel","error","-i","/tmp/tts.bin","-ac","1","-ar","48000","-f","s16le","/tmp/tts.raw"],check=True)
+            return np.fromfile("/tmp/tts.raw",dtype="<i2").astype(np.float32)/32768, 48000
         except Exception as e: err.append("%s: %s"%(m,e))
     raise RuntimeError("Озвучка не удалась — "+" || ".join(err))
 def music(sec,sr=48000):
