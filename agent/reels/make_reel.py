@@ -87,8 +87,13 @@ def tts(text):
     err=[]
     for m in TTS_MODELS:
         try:
-            r=post(GAPI+m+":generateContent",{"contents":[{"parts":[{"text":text}]}],
-                "generationConfig":{"responseModalities":["AUDIO"],"speechConfig":{"languageCode":"ru-RU","voiceConfig":{"prebuiltVoiceConfig":{"voiceName":VOICE}}}}})
+            gc={"responseModalities":["AUDIO"],"seed":20261123,"temperature":0.6,
+                "speechConfig":{"languageCode":"ru-RU","voiceConfig":{"prebuiltVoiceConfig":{"voiceName":VOICE}}}}
+            body={"systemInstruction":{"parts":[{"text":"Ты диктор. Читай присланный текст спокойно, тепло и дружелюбно, в умеренном темпе, чётко произнося названия. Читай только сам текст."}]},
+                  "contents":[{"parts":[{"text":text}]}],"generationConfig":gc}
+            try: r=post(GAPI+m+":generateContent",body)
+            except Exception as e1:   # если модель не принимает указания — читаем без них
+                print("TTS без указаний:",str(e1)[:200]); body.pop("systemInstruction"); r=post(GAPI+m+":generateContent",body)
             part=next(x for x in r["candidates"][0]["content"]["parts"] if "inlineData" in x)["inlineData"]
             mime=part.get("mimeType",""); raw=base64.b64decode(part["data"]); print("TTS", m, mime, len(raw))
             if "pcm" in mime.lower() or "l16" in mime.lower():
