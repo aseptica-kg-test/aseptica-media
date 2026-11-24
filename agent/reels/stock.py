@@ -123,7 +123,10 @@ def final_frame(ctx,t,lt):
     a=ease((lt-0.4)/0.4); f=F("Black",96); tw=d.textlength(ctx["name"],font=f)
     d.rounded_rectangle([(W-tw)/2-40,300,(W+tw)/2+40,430],65,fill=(255,255,255,int(255*a))); d.text(((W-tw)/2,312),ctx["name"],font=f,fill=c+(int(255*a),))
     f2=F("Bold",50); s="Aseptica — забота о глазах"; d.text(((W-d.textlength(s,font=f2))/2,470),s,font=f2,fill=(255,255,255,int(255*a)))
-    f3=F("SemiBold",40); s3="Перед применением прочитайте инструкцию"; d.text(((W-d.textlength(s3,font=f3))/2,1530),s3,font=f3,fill=(255,255,255,int(255*a)))
+    talking=any(st<=t<e for st,e,_ in ctx["sentences"])
+    f3=F("SemiBold",40); s3="Перед применением прочитайте инструкцию"
+    if not talking: d.text(((W-d.textlength(s3,font=f3))/2,1530),s3,font=f3,fill=(255,255,255,int(255*a)))
+    if talking: subs(im,ctx,t)   # если голос ещё звучит — субтитры поверх упаковки
     styles.footer(im,ctx); return im
 def clip_len(fn):
     try: return float(subprocess.run(["ffprobe","-v","error","-show_entries","format=duration","-of","csv=p=0",fn],capture_output=True,text=True).stdout.strip())

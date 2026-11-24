@@ -212,7 +212,7 @@ def main():
     # аудио 48 кГц
     if vsr!=48000: voice=np.interp(np.arange(int(len(voice)*48000/vsr))*vsr/48000,np.arange(len(voice)),voice)
     vdur=len(voice)/48000; dur=max(12.0,min(55.0,vdur+3.0)); sr=48000
-    if STYLE=="stock": dur=max(21.0,0.6+vdur+0.4+5.0)   # человек 8 с, без людей 8 с, упаковка 5 с (решение владельца 24.11.2026)
+    if STYLE=="stock": dur=max(21.0,0.6+vdur+3.0)   # голос может заканчиваться на кадре с упаковкой   # человек 8 с, без людей 8 с, упаковка 5 с (решение владельца 24.11.2026)
     m,_=music(dur); mix=m*0.10; st=int(0.6*sr); mix[st:st+len(voice)]+=voice[:max(0,len(mix)-st)]*0.95
     mix=np.clip(mix,-1,1)
     os.makedirs("/tmp/reel",exist_ok=True)
