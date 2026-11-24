@@ -70,7 +70,8 @@ else:
 system=("Ты пишешь сценарии коротких вертикальных видео (Reels) для компании Aseptica (глазные капли, медицинские изделия), Кыргызстан. Язык: русский.\n"
         "Стиль: "+R["style"]+"\nСтрого запрещено: "+"; ".join(R["common_forbidden"])+".\n"
         'Ответ — JSON: {"voice": текст для озвучки 30–40 слов (ролик до 25 секунд), спокойно и понятно, без хэштегов и эмодзи; дозировку и сроки называй точно как в фактах; '
-        '"lines": [3 коротких надписи на экран, каждая не длиннее 6 слов; надписи — это три разные ключевые мысли (польза, когда пригодится, как применять), без приветствий и без повторения фразы из начала озвучки]; Не начинай со слов «Знакомьтесь», «Представляем», «Встречайте» и не используй их вообще — начни сразу с пользы или ситуации из жизни;  "caption": подпись к посту 250–450 знаков, можно 1–2 эмодзи, без хэштегов и юр. строки}.')
+        '"lines": [3 коротких надписи на экран, каждая не длиннее 6 слов; надписи — это три разные ключевые мысли (польза, когда пригодится, как применять), без приветствий и без повторения фразы из начала озвучки]; Не начинай со слов «Знакомьтесь», «Представляем», «Встречайте» и не используй их вообще — начни сразу с пользы или ситуации из жизни;  "caption": подпись к посту 250–450 знаков, можно 1–2 эмодзи, без хэштегов и юр. строки}.'
+        +(' Также "scenes": 3 поисковых запроса НА АНГЛИЙСКОМ (2–4 слова) для стокового видео к каждой трети озвучки: обычная жизнь взрослых людей (дом, офис, улица, зима, компьютер, линзы, природа), без детей, без врачей, больниц, лекарств и уколов; например "woman laptop office", "snowy window home".' if STYLE=="stock" else ''))
 BAD=re.compile(r"знакомьт|применяйте|встречайте|нейропротек|лечит|лечени|излеч|устраня|синдром|глауком|диабет|катаракт|ретинопат|кератокону|дет(и|ей|ям|ск)|подрост|беремен|гарант|лучш|№ ?1|скидк|цен[аы]",re.I)
 def post(url,body,timeout=180):
     req=urllib.request.Request(url+("&" if "?" in url else "?")+"key="+KEY,data=json.dumps(body).encode(),headers={"Content-Type":"application/json"})
@@ -92,7 +93,7 @@ def write_text():
                 "lines":["Увлажнение и защита","Ветер, кондиционер, экран","1 капля 2–3 раза в сутки"],"caption":"Витолин — глазные капли для комфорта в течение дня 💧"}
     body={"systemInstruction":{"parts":[{"text":system}]},"contents":[{"role":"user","parts":[{"text":task}]}],
           "generationConfig":{"temperature":0.8,"responseMimeType":"application/json","responseSchema":{"type":"OBJECT","properties":{
-            "voice":{"type":"STRING"},"lines":{"type":"ARRAY","items":{"type":"STRING"}},"caption":{"type":"STRING"}},"required":["voice","lines","caption"]}}}
+            "voice":{"type":"STRING"},"lines":{"type":"ARRAY","items":{"type":"STRING"}},"caption":{"type":"STRING"},"scenes":{"type":"ARRAY","items":{"type":"STRING"}}},"required":["voice","lines","caption"]+(["scenes"] if STYLE=="stock" else [])}}}
     for _ in range(3):
         try: r=post(GAPI+TEXT_MODEL+":generateContent",body)
         except Exception as e:   # модель перегружена — запасная модель
@@ -171,6 +172,29 @@ def render_new(o,voice,dur,sr):
     for fi in range(int(dur*FPS)):
         fr=(styles.infographic_frame if STYLE=="infographic" else styles.mascot_frame)(ctx,fi/FPS); fr.save(fpath%fi,quality=88)
     finish(o,fpath,dur)
+def render_stock(o,voice,dur,sr):
+    import styles, stock
+    sents=[x.strip() for x in re.split(r"(?<=[.!?])\s+",o["voice"]) if x.strip()]
+    vstart=0.6; vlen=len(voice)/48000; tot=sum(len(x) for x in sents) or 1; tt=vstart; S=[]
+    for x in sents: dd=vlen*len(x)/tot; S.append((tt,tt+dd,x)); tt+=dd
+    logo=Image.open(os.path.join(ROOT,"brand","aseptica_logo_white.png")); lw=380; logo=logo.resize((lw,int(logo.height*lw/logo.width)),Image.LANCZOS)
+    pk=PRODKEY; box=Image.open(os.path.join(ROOT,"packshots","%s_box.png"%{"forte":"vitolin_forte"}.get(pk,pk))).convert("RGBA"); box=box.crop(box.getbbox())
+    bh=640; bw=int(box.width*bh/box.height)
+    if bw>620: bw=620; bh=int(box.height*bw/box.width)
+    box=box.resize((bw,bh),Image.LANCZOS)
+    end_voice=vstart+vlen; ends=[vstart+vlen*0.34,vstart+vlen*0.68,end_voice+0.2,dur]
+    used=set(state.get("stock_used",[]))
+    if MOCK:
+        clips=[]
+        for i,c in enumerate(["red","green","blue"]):
+            fn="/tmp/reel/clip%d.mp4"%i; subprocess.run(["ffmpeg","-y","-loglevel","error","-f","lavfi","-i","testsrc2=size=1280x720:rate=25:duration=5","-vf","hue=h=%d"%(i*120),fn],check=True); clips.append((i,fn,c))
+    else:
+        clips=stock.get_clips(o.get("scenes",[]),os.environ["PIXABAY_API_KEY"],used,3,seed=len(used))
+    state["stock_used"]=(list(used)+[c[0] for c in clips])[-300:]
+    o["stock"]=[{"id":c[0],"query":c[2]} for c in clips]
+    ctx={"color":color,"lines":(o["lines"]+["","",""])[:3],"sentences":S,"dur":dur,"box":box,"name":PRODNAME,"logo":logo,
+         "footer":footer,"scene_ends":ends}
+    fpath="/tmp/reel/f%05d.jpg"; stock.render(ctx,clips,fpath,FPS); finish(o,fpath,dur)
 def wrap(d,txt,f,mw):
     L=[];cur=""
     for w in txt.split():
@@ -184,11 +208,12 @@ def main():
     o=write_text(); voice,vsr=tts(o["voice"])
     # аудио 48 кГц
     if vsr!=48000: voice=np.interp(np.arange(int(len(voice)*48000/vsr))*vsr/48000,np.arange(len(voice)),voice)
-    vdur=len(voice)/48000; dur=max(12.0,min(55.0,vdur+3.0)); sr=48000
+    vdur=len(voice)/48000; dur=max(12.0,min(55.0,vdur+(4.0 if STYLE=="stock" else 3.0))); sr=48000
     m,_=music(dur); mix=m*0.10; st=int(0.6*sr); mix[st:st+len(voice)]+=voice[:max(0,len(mix)-st)]*0.95
     mix=np.clip(mix,-1,1)
     os.makedirs("/tmp/reel",exist_ok=True)
     with wave.open("/tmp/reel/a.wav","wb") as w: w.setnchannels(1); w.setsampwidth(2); w.setframerate(sr); w.writeframes((mix*32767).astype("<i2").tobytes())
+    if STYLE=="stock": return render_stock(o,voice,dur,sr)
     if STYLE in ("infographic","mascot"):
         return render_new(o,voice,dur,sr)
     # картинки

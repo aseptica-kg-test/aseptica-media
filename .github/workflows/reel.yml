@@ -23,6 +23,7 @@ jobs:
       - name: Собрать ролик
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
         run: python3 agent/reels/make_reel.py
       - name: Сохранить результат
         if: always()
