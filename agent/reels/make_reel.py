@@ -1,6 +1,6 @@
 # Сборщик Reels Aseptica: тема → текст (Gemini) → голос (Gemini TTS, Nika) → видео 1080×1920 с музыкой.
 # Запускается на GitHub Actions. Локальная проверка без интернета: python3 make_reel.py --mock
-import os, sys, json, base64, math, random, re, subprocess, datetime, wave, struct, urllib.request, urllib.error
+import shutil, os, sys, json, base64, math, random, re, subprocess, datetime, wave, struct, urllib.request, urllib.error
 import numpy as np
 sys.path.insert(0,os.path.dirname(os.path.abspath(__file__)))
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
@@ -32,6 +32,19 @@ if not REQ.get("topic"):   # по расписанию: вт и сб — инф�
     if state.get("day")==now6.strftime("%Y-%m-%d"):   # утром несколько попыток: ролик на сегодня уже есть
         print("Ролик на сегодня уже собран — пропуск"); sys.exit(0)
     isP = wd!=3   # сборка в четверг утром → совет с капелькой; вт и сб — препарат
+    qf=os.path.join(ROOT,"reels","queue.json")   # готовые ролики, одобренные владельцем: выходят в дни препаратов
+    queue=json.load(open(qf,encoding="utf-8")) if os.path.exists(qf) else []
+    if isP and queue:
+        item=queue.pop(0); src=os.path.join(ROOT,item["file"]); stamp=now6.strftime("%Y%m%d-%H%M")
+        dst="reels/reel_%s.mp4"%stamp; shutil.copy(src,os.path.join(ROOT,dst))
+        info=json.load(open(os.path.join(ROOT,item["json"]),encoding="utf-8"))
+        info.update({"created":stamp,"video_url":RAW+dst,"used":False,"slot":n}); info.pop("warning",None)
+        json.dump(info,open(os.path.join(ROOT,"reels","latest.json"),"w",encoding="utf-8"),ensure_ascii=False,indent=1)
+        json.dump(queue,open(qf,"w",encoding="utf-8"),ensure_ascii=False,indent=1)
+        state["day"]=now6.strftime("%Y-%m-%d"); state["counter"]=n+1
+        state["history"]=(state.get("history",[])+[{"slot":n,"file":dst,"title":info.get("title","")}])[-30:]
+        json.dump(state,open(statef,"w"),ensure_ascii=False,indent=1)
+        print("Из очереди:",item["file"]); sys.exit(0)
     STYLE = "infographic" if isP else "mascot"
     k = state.get("p",0) if isP else state.get("t",0)
 if REQ.get("topic","").startswith("product:"):
