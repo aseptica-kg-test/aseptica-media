@@ -1,1 +1,1 @@
-style=infographic topic=product:vitolin prod=1 run=1795451560
+style=infographic topic=product:vitolin angle=4 run=1795483833
