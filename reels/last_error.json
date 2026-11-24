@@ -1,4 +1,4 @@
 {
- "error": "Озвучка не удалась — gemini-3.8-flash-tts: HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://aistudio.google.com/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceede || gemini-3.1-flash-tts-preview: HTTP 400: {\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"No matching speaker voice found for name: Nika and language: ru-RU\",\n    \"status\": \"INVALID_ARGUMENT\"\n  }\n}\n",
- "time": "2026-11-24T05:44:01.430262+00:00"
+ "error": "[Errno 2] No such file or directory: '/tmp/reel/v_in.wav'",
+ "time": "2026-11-24T15:29:13.236536+00:00"
 }
