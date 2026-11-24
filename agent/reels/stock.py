@@ -20,9 +20,9 @@ def search(q,key,used):
         v=h["videos"].get("large") or {}
         if not v.get("url") or v.get("width",0)<1280: v=h["videos"].get("medium") or {}
         if not v.get("url"): continue
-        words=[w for w in q.lower().split() if len(w)>3 and w not in ("person","woman","people","close","with","near","at","the")]
+        words=[w for w in q.lower().split() if len(w)>3 and w not in ("person","woman","people","close","with","near","at","the","modern","cozy","home","indoor","indoors","interior","young","happy","calm")]
         score=sum(1 for w in words if w[:5] in tags)   # blinking ≈ blink
-        if words and score==0: continue          # видео должно подходить по смыслу хотя бы одним словом
+        if words and score<len(words): continue   # видео должно подходить по ВСЕМ значимым словам запроса
         ok.append((score,h["id"],v["url"],tags))
     ok.sort(key=lambda x:-x[0]); return [x[1:] for x in ok]
 def get_clips(queries,key,used,n=3,seed=0):
@@ -30,8 +30,13 @@ def get_clips(queries,key,used,n=3,seed=0):
     qs=list(queries[:n])+FALLBACK
     for q in qs:
         if len(out)>=n: break
-        try: c=search(q,key,used|{x[0] for x in out})
-        except Exception as e: print("Pixabay:",q,e); continue
+        c=[]
+        ws=q.split()
+        tries=[q]+[" ".join(w for w in ws if w!=x) for x in ws if len(ws)>2 and x!=max(ws,key=len)]   # упрощаем запрос, главное слово оставляем
+        for qq in tries:
+            try: c=search(qq,key,used|{x[0] for x in out})
+            except Exception as e: print("Pixabay:",qq,e); c=[]
+            if c: q=qq; break
         if not c: print("Pixabay: нет видео для",q); continue
         pick=rnd.choice(c[:3]); fn="/tmp/reel/clip%d.mp4"%len(out)
         req=urllib.request.Request(pick[1],headers={"User-Agent":"Mozilla/5.0"})
