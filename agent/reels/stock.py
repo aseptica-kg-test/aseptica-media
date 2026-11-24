@@ -52,11 +52,17 @@ def fetch(q,key,used,rnd,idx,nopeople=False):
             with urllib.request.urlopen(req,timeout=120) as r, open(fn,"wb") as f: f.write(r.read())
             print("Видео:",qq,"→",pick[0],pick[2]); return (pick[0],fn,qq)
     print("Pixabay: нет видео для",q); return None
-def get_clips(queries,key,used,seed=0):
+def get_clips(queries,key,used,seed=0,theme=""):
     """2 видео: 1) один человек в жизненной ситуации (начало и середина), 2) спокойный кадр БЕЗ людей (конец) — решение владельца 24.11.2026"""
     rnd=random.Random(seed); q=list(queries)+["",""]
     a=None
-    for qq in [q[0]]+FALLBACK:
+    lf=os.path.join(ROOT,"reels","stock_lib","lib.json")
+    if theme and os.path.exists(lf):   # своё видео по теме ролика (например «отопление») — всегда в приоритете
+        own=[x for x in json.load(open(lf,encoding="utf-8")) if x.get("theme") and x["theme"] in theme.lower()]
+        fresh=[x for x in own if x["file"] not in used] or own
+        if fresh:
+            p=rnd.choice(fresh); a=(p["file"],os.path.join(ROOT,p["file"]),"тема: "+p["theme"]); print("Своё видео по теме:",p["file"])
+    for qq in ([] if a else [q[0]]+FALLBACK):
         if qq and (a:=fetch(qq,key,used,rnd,0)): break
     b=None
     for qq in [q[1]]+OBJ_FALLBACK:

@@ -189,7 +189,7 @@ def render_stock(o,voice,dur,sr):
         for i,c in enumerate(["red","green"]):
             fn="/tmp/reel/clip%d.mp4"%i; subprocess.run(["ffmpeg","-y","-loglevel","error","-f","lavfi","-i","testsrc2=size=1280x720:rate=25:duration=5","-vf","hue=h=%d"%(i*120),fn],check=True); clips.append((i,fn,c))
     else:
-        clips=stock.get_clips(o.get("scenes",[]),os.environ["PIXABAY_API_KEY"],used,seed=len(used))
+        clips=stock.get_clips(o.get("scenes",[]),os.environ["PIXABAY_API_KEY"],used,seed=len(used),theme=title)
     state["stock_used"]=(list(used)+[c[0] for c in clips])[-300:]
     o["stock"]=[{"id":c[0],"query":c[2]} for c in clips]
     ctx={"color":color,"lines":(o["lines"]+["","",""])[:3],"sentences":S,"dur":dur,"box":box,"name":PRODNAME,"logo":logo,
