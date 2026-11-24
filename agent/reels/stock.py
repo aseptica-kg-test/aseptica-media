@@ -1,5 +1,5 @@
 # Реалистичные ролики: настоящие видео с Pixabay + голос + надписи + упаковка в финале (решение владельца 24.11.2026)
-import os, json, random, subprocess, urllib.request, urllib.parse, math
+import os, json, random, subprocess, urllib.request, urllib.parse, urllib.error, math
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 import styles
@@ -8,7 +8,10 @@ FALLBACK=["woman working laptop office","winter window home","man computer scree
 BANNED=("child","kid","baby","girl","boy","hospital","surgery","injection","syringe","blood","doctor","nurse","pill","medicine")
 def search(q,key,used):
     url="https://pixabay.com/api/videos/?"+urllib.parse.urlencode({"key":key,"q":q[:90],"safesearch":"true","per_page":30,"video_type":"film","lang":"en"})
-    with urllib.request.urlopen(url,timeout=60) as r: hits=json.load(r).get("hits",[])
+    req=urllib.request.Request(url,headers={"User-Agent":"Mozilla/5.0 (X11; Linux x86_64) AsepticaReels/1.0","Accept":"application/json"})
+    try:
+        with urllib.request.urlopen(req,timeout=60) as r: hits=json.load(r).get("hits",[])
+    except urllib.error.HTTPError as e: raise RuntimeError("HTTP %s: %s"%(e.code,e.read()[:200].decode("utf-8","ignore")))
     ok=[]
     for h in hits:
         tags=h.get("tags","").lower()
