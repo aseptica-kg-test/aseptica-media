@@ -8,7 +8,7 @@ PEOPLE=("woman","man","person","people","girl","boy","face","portrait","model","
 OBJ_FALLBACK=["laptop desk","snow window","cup tea window","houseplant window","water drops"]
 FALLBACK=["woman working laptop office","winter window home","man computer screen night","woman drinking tea window","city wind street","air conditioner office"]
 BANNED=("child","kid","baby","girl","boy","hospital","surgery","injection","syringe","blood","doctor","nurse","pill","medicine",
-        "fire","flame","fireplace","burn","headache","stress","pain","sad","cry","tired","depress","sick","ill","migraine","covid","mask","quarantine","pandemic","massage","spa","therapy","treatment","eyeball","macro","iris","pupil")
+        "fire","flame","fireplace","burn","headache","stress","pain","sad","cry","tired","depress","sick","ill","migraine","covid","mask","quarantine","pandemic","massage","spa","therapy","treatment","eyeball","macro","iris","pupil","apple","macbook","iphone","ipad","samsung","logo","brand","nike","coca")
 def search(q,key,used,nopeople=False):
     url="https://pixabay.com/api/videos/?"+urllib.parse.urlencode({"key":key,"q":q[:90],"safesearch":"true","per_page":30,"video_type":"film","lang":"en"})
     req=urllib.request.Request(url,headers={"User-Agent":"Mozilla/5.0 (X11; Linux x86_64) AsepticaReels/1.0","Accept":"application/json"})
