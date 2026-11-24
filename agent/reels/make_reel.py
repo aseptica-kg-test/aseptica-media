@@ -182,7 +182,7 @@ def render_stock(o,voice,dur,sr):
     bh=640; bw=int(box.width*bh/box.height)
     if bw>620: bw=620; bh=int(box.height*bw/box.width)
     box=box.resize((bw,bh),Image.LANCZOS)
-    end_voice=vstart+vlen; ends=[vstart+vlen*0.34,vstart+vlen*0.68,end_voice+0.2,dur]
+    body=dur-5.0; ends=[body/4,body/2,body,dur]   # видео с человеком = видео без людей, упаковка 5 с
     used=set(state.get("stock_used",[]))
     if MOCK:
         clips=[]
@@ -205,10 +205,14 @@ def wrap(d,txt,f,mw):
     return L
 def ease(x): x=max(0,min(1,x)); return 1-(1-x)**3
 def main():
-    o=write_text(); voice,vsr=tts(o["voice"])
+    if REQ.get("reuse"):   # тот же текст, что в одобренном ролике (reuse=reels/samples/xxx.json)
+        R=json.load(open(os.path.join(ROOT,REQ["reuse"]),encoding="utf-8")); o={"voice":R["voice_text"],"lines":R["lines"],"caption":R.get("caption_raw",R.get("caption","")),"scenes":[]}
+    else: o=write_text()
+    voice,vsr=tts(o["voice"])
     # аудио 48 кГц
     if vsr!=48000: voice=np.interp(np.arange(int(len(voice)*48000/vsr))*vsr/48000,np.arange(len(voice)),voice)
-    vdur=len(voice)/48000; dur=max(12.0,min(55.0,vdur+(4.0 if STYLE=="stock" else 3.0))); sr=48000
+    vdur=len(voice)/48000; dur=max(12.0,min(55.0,vdur+3.0)); sr=48000
+    if STYLE=="stock": dur=max(21.0,0.6+vdur+0.4+5.0)   # человек 8 с, без людей 8 с, упаковка 5 с (решение владельца 24.11.2026)
     m,_=music(dur); mix=m*0.10; st=int(0.6*sr); mix[st:st+len(voice)]+=voice[:max(0,len(mix)-st)]*0.95
     mix=np.clip(mix,-1,1)
     os.makedirs("/tmp/reel",exist_ok=True)
@@ -259,7 +263,7 @@ def finish(o,fpath,dur):
         if f.startswith("f"): os.remove("/tmp/reel/"+f)
     ik=img_rel; tags=(pack.get("hashtags_ru","")+" "+pack.get("hashtags_extra",{}).get("/".join(ik.split("/")[-2:]),"")).strip()
     caption=o["caption"].strip()+"\n\n"+footer+"\n\n"+tags
-    info={"created":stamp,"title":title,"video_url":RAW+rel,"caption":caption,"voice_text":o["voice"],"lines":o["lines"],
+    info={"created":stamp,"title":title,"video_url":RAW+rel,"caption":caption,"caption_raw":o["caption"],"voice_text":o["voice"],"lines":o["lines"],
           "warning":o.get("warning",""),"used":False,"slot":n}
     if SAMPLE:
         json.dump(info,open(os.path.join(ROOT,"reels","samples","%s_latest.json"%STYLE),"w",encoding="utf-8"),ensure_ascii=False,indent=1)
