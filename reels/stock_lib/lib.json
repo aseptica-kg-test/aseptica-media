@@ -1,14 +1,90 @@
 [
  {
   "file": "reels/stock_lib/radiator_window.mp4",
-  "tags": "radiator heater heating winter window woman home apartment",
-  "source": "Pexels 6279697, прислал владелец 24.11.2026",
-  "theme": "отоплен"
+  "tags": "radiator heater heating winter window woman home",
+  "themes": [
+   "отоплен",
+   "батаре",
+   "зим"
+  ],
+  "people": true,
+  "source": "Pexels 6279697, прислал владелец 24.11.2026"
  },
  {
   "file": "reels/stock_lib/heater_reading.mp4",
-  "tags": "heater radiator heating winter woman reading book blanket home cozy",
-  "source": "Pexels 7033442, прислал владелец 24.11.2026",
-  "theme": "отоплен"
+  "tags": "heater radiator heating winter woman reading blanket home",
+  "themes": [
+   "отоплен",
+   "батаре",
+   "зим",
+   "сух"
+  ],
+  "people": true,
+  "source": "Pexels 7033442, прислал владелец 24.11.2026"
+ },
+ {
+  "file": "reels/stock_lib/snow_window.mp4",
+  "tags": "snow winter window balcony houses",
+  "themes": [
+   "зим",
+   "отоплен",
+   "снег",
+   "холод",
+   "батаре"
+  ],
+  "people": false,
+  "source": "Pexels 14668860, прислал владелец 24.11.2026"
+ },
+ {
+  "file": "reels/stock_lib/eye_irritation_mirror.mp4",
+  "tags": "woman mirror eye irritation discomfort rubbing eye",
+  "themes": [
+   "дискомфорт",
+   "раздраж",
+   "сухост"
+  ],
+  "people": true,
+  "source": "Pexels 6654154, прислал владелец 24.11.2026"
+ },
+ {
+  "file": "reels/stock_lib/laptop_sofa_woman.mp4",
+  "tags": "woman laptop sofa home work computer",
+  "themes": [
+   "компьютер",
+   "экран",
+   "ноутбук"
+  ],
+  "people": true,
+  "source": "Pexels 4722639, прислал владелец 24.11.2026"
+ },
+ {
+  "file": "reels/stock_lib/laptop_two_women.mp4",
+  "tags": "two women laptop sofa home computer",
+  "themes": [
+   "компьютер",
+   "экран",
+   "ноутбук"
+  ],
+  "people": true,
+  "source": "Pexels 6608931, прислал владелец 24.11.2026"
+ },
+ {
+  "file": "reels/stock_lib/glasses_lenses_chart.mp4",
+  "tags": "glasses contact lens case eye chart",
+  "themes": [
+   "линз",
+   "очк"
+  ],
+  "people": false,
+  "source": "Pexels 5995133, прислал владелец 24.11.2026"
+ },
+ {
+  "file": "reels/stock_lib/lenses_mirror_woman.mp4",
+  "tags": "woman contact lenses mirror",
+  "themes": [
+   "линз"
+  ],
+  "people": true,
+  "source": "Pexels 5843379, прислал владелец 24.11.2026"
  }
 ]

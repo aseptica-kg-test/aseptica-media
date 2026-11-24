@@ -30,15 +30,16 @@ def search(q,key,used,nopeople=False):
     ok.sort(key=lambda x:-x[0]); return [x[1:] for x in ok]
 ROOT=os.path.abspath(os.path.join(os.path.dirname(__file__),"..",".."))
 GENERIC=("person","people","close","with","near","at","the","modern","cozy","home","indoor","indoors","interior","young","happy","calm")
-def lib_match(q,used):
+def lib_match(q,used,people=True):
     lf=os.path.join(ROOT,"reels","stock_lib","lib.json")
     if not os.path.exists(lf): return []
     words=[w for w in q.lower().split() if len(w)>3 and w not in GENERIC]
-    return [x for x in json.load(open(lf,encoding="utf-8")) if x["file"] not in used and words and any(w[:5] in x["tags"].lower() for w in words if w[:5] in ("radia","heate","batte"))] or \
-           [x for x in json.load(open(lf,encoding="utf-8")) if x["file"] not in used and words and all(w[:5] in x["tags"].lower() for w in words)]
+    LL=[x for x in json.load(open(lf,encoding="utf-8")) if x.get("people",True)==people]
+    return [x for x in LL if x["file"] not in used and words and any(w[:5] in x["tags"].lower() for w in words if w[:5] in ("radia","heate","batte"))] or \
+           [x for x in LL if x["file"] not in used and words and all(w[:5] in x["tags"].lower() for w in words)]
 def fetch(q,key,used,rnd,idx,nopeople=False):
-    if not nopeople:
-        lib=lib_match(q,used)   # сначала свои видео (папка reels/stock_lib)
+    if True:
+        lib=lib_match(q,used,people=not nopeople)   # сначала свои видео (папка reels/stock_lib)
         if lib:
             pick=rnd.choice(lib); print("Своё видео:",q,"→",pick["file"]); return (pick["file"],os.path.join(ROOT,pick["file"]),q)
     ws=q.split()
@@ -55,17 +56,18 @@ def fetch(q,key,used,rnd,idx,nopeople=False):
 def get_clips(queries,key,used,seed=0,theme=""):
     """2 видео: 1) один человек в жизненной ситуации (начало и середина), 2) спокойный кадр БЕЗ людей (конец) — решение владельца 24.11.2026"""
     rnd=random.Random(seed); q=list(queries)+["",""]
-    a=None
+    a=None; b=None
     lf=os.path.join(ROOT,"reels","stock_lib","lib.json")
-    if theme and os.path.exists(lf):   # своё видео по теме ролика (например «отопление») — всегда в приоритете
-        own=[x for x in json.load(open(lf,encoding="utf-8")) if x.get("theme") and x["theme"] in theme.lower()]
-        fresh=[x for x in own if x["file"] not in used] or own
-        if fresh:
-            p=rnd.choice(fresh); a=(p["file"],os.path.join(ROOT,p["file"]),"тема: "+p["theme"]); print("Своё видео по теме:",p["file"])
+    def own(people):   # свои видео по теме ролика (решение владельца 24.11.2026) — всегда в приоритете
+        if not (theme and os.path.exists(lf)): return None
+        L=[x for x in json.load(open(lf,encoding="utf-8")) if x.get("people",True)==people and any(k in theme.lower() for k in x.get("themes",[]))]
+        fresh=[x for x in L if x["file"] not in used] or L
+        if not fresh: return None
+        p=rnd.choice(fresh); print("Своё видео по теме:",p["file"]); return (p["file"],os.path.join(ROOT,p["file"]),"тема")
+    a=own(True); b=own(False)
     for qq in ([] if a else [q[0]]+FALLBACK):
         if qq and (a:=fetch(qq,key,used,rnd,0)): break
-    b=None
-    for qq in [q[1]]+OBJ_FALLBACK:
+    for qq in ([] if b else [q[1]]+OBJ_FALLBACK):
         if qq and (b:=fetch(qq,key,used|{a[0] if a else 0},rnd,1,nopeople=True)): break
     if not a or not b: raise RuntimeError("Pixabay: не удалось подобрать видео")
     return [a,b]
