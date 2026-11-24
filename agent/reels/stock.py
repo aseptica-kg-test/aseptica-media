@@ -20,13 +20,13 @@ def search(q,key,used):
         v=h["videos"].get("large") or {}
         if not v.get("url") or v.get("width",0)<1280: v=h["videos"].get("medium") or {}
         if not v.get("url"): continue
-        words=[w for w in q.lower().split() if len(w)>3 and w not in ("person","woman","people","close","with","near","at","the","modern","cozy","home","indoor","indoors","interior","young","happy","calm")]
+        words=[w for w in q.lower().split() if len(w)>3 and w not in ("person","people","close","with","near","at","the","modern","cozy","home","indoor","indoors","interior","young","happy","calm")]
         score=sum(1 for w in words if w[:5] in tags)   # blinking ≈ blink
         if words and score<len(words): continue   # видео должно подходить по ВСЕМ значимым словам запроса
         ok.append((score,h["id"],v["url"],tags))
     ok.sort(key=lambda x:-x[0]); return [x[1:] for x in ok]
 ROOT=os.path.abspath(os.path.join(os.path.dirname(__file__),"..",".."))
-GENERIC=("person","woman","people","close","with","near","at","the","modern","cozy","home","indoor","indoors","interior","young","happy","calm")
+GENERIC=("person","people","close","with","near","at","the","modern","cozy","home","indoor","indoors","interior","young","happy","calm")
 def lib_match(q,used):
     lf=os.path.join(ROOT,"reels","stock_lib","lib.json")
     if not os.path.exists(lf): return []
