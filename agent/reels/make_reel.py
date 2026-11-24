@@ -214,7 +214,7 @@ def main():
     vdur=len(voice)/48000; dur=max(12.0,min(55.0,vdur+3.0)); sr=48000
     if STYLE=="stock":   # 8 с человек, 8 с без людей, 5 с упаковка; голос должен закончиться к 18-й секунде
         if vdur>17.4:   # чуть ускоряем речь (без изменения тона), не больше чем на 12 %
-            k=min(1.12,vdur/17.4); import wave
+            k=min(1.12,vdur/17.4); os.makedirs("/tmp/reel",exist_ok=True)
             with wave.open("/tmp/reel/v_in.wav","wb") as w: w.setnchannels(1); w.setsampwidth(2); w.setframerate(48000); w.writeframes((np.clip(voice,-1,1)*32767).astype(np.int16).tobytes())
             subprocess.run(["ffmpeg","-y","-loglevel","error","-i","/tmp/reel/v_in.wav","-af","atempo=%.3f"%k,"-ar","48000","-ac","1","-f","s16le","/tmp/reel/v_out.raw"],check=True)
             voice=np.frombuffer(open("/tmp/reel/v_out.raw","rb").read(),np.int16).astype(np.float32)/32767; vdur=len(voice)/48000; print("Голос ускорен в %.2f раза"%k)
